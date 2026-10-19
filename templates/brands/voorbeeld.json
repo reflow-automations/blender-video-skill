@@ -1,0 +1,37 @@
+{
+ "_uitleg": "Merkprofiel (fictief voorbeeld). new_video.py kopieert de bestanden onder 'files' naar <video>/assets/brand/ en zet de paden goed. Relatieve paden gelden vanaf templates/brands/.",
+ "name": "Afspraakje",
+ "files": {
+  "logo_on_dark": "files/voorbeeld-on-dark.png",
+  "logo_on_light": "files/voorbeeld-on-light.png",
+  "app_icon": "files/voorbeeld-icon.png"
+ },
+ "colors": {
+  "bg": "#14111f",
+  "panel": "#1d1830",
+  "line": "#2e2847",
+  "brand": "#7c3aed",
+  "accent": "#f59e0b",
+  "txt": "#ede9fe",
+  "mut": "#a59cc4",
+  "ink": "#1e293b"
+ },
+ "app": {
+  "url": "app.voorbeeld.nl",
+  "nav": [
+   "Agenda",
+   "Klanten",
+   "Behandelingen",
+   "Instellingen"
+  ],
+  "browser": "Chrome",
+  "clock": "di 21 okt  09:41"
+ },
+ "captions": {
+  "highlight": "#f59e0b"
+ },
+ "room": {
+  "wall": "walnut",
+  "led": "#ff9e52"
+ }
+}

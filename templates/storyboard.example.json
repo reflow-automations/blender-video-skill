@@ -1,0 +1,192 @@
+{
+ "_uitleg": "Fictief voorbeeld: kapsalon-app 'Afspraakje' (bestaat niet, alle namen en cijfers verzonnen). Ankers ('from', 'at', ...) zijn woorden uit de stem; tijden rekent timeline.py uit. Zie references/storyboard-format.md.",
+ "slug": "afspraakje-blender",
+ "title": "Afspraakje in de 3D-kamer",
+ "format": "9:16",
+ "voice": {
+  "mode": "tts",
+  "file": "audio/vo.mp3"
+ },
+ "script": "Klanten die bellen terwijl jij aan het knippen bent. Elke kapper kent het. Afspraakje neemt dat over. Klanten boeken zelf, ook 's avonds en in het weekend. Jij ziet de hele week in één overzicht. Komt er een nieuwe afspraak binnen? Dan krijg je meteen een seintje. Bij onze proefsalon boekte de helft van de klanten online. Probeer het een maand gratis. Bevalt het niet, dan stop je gewoon.",
+ "caption_fix": {
+  "zeintje": "seintje"
+ },
+ "caption_keywords": [
+  "klanten",
+  "knippen",
+  "kapper",
+  "afspraakje",
+  "zelf",
+  "avonds",
+  "weekend",
+  "week",
+  "overzicht",
+  "afspraak",
+  "seintje",
+  "helft",
+  "online",
+  "gratis",
+  "maand",
+  "stop",
+  "gewoon"
+ ],
+ "establishing": true,
+ "beats": [
+  {
+   "station": "board",
+   "from": "Klanten",
+   "lines": [
+    {
+     "text": "Klanten bellen"
+    },
+    {
+     "text": "tijdens het knippen",
+     "at": "knippen"
+    },
+    {
+     "text": "kost rust",
+     "color": "accent",
+     "at": "kent",
+     "indent": 110
+    }
+   ]
+  },
+  {
+   "station": "monitor",
+   "from": "Afspraakje",
+   "zoom": {
+    "box": [
+     250,
+     90,
+     1330,
+     850
+    ]
+   },
+   "scene": {
+    "type": "list",
+    "title": "Deze week",
+    "subtitle": "online geboekt",
+    "nav": 0,
+    "path": "/agenda/week",
+    "columns": [
+     "Klant",
+     "Dag",
+     "Behandeling"
+    ],
+    "status": "Geboekt",
+    "rows_from": "boeken",
+    "rows": [
+     [
+      "Femke Jansen",
+      "za 10:30",
+      "Knippen en föhnen"
+     ],
+     [
+      "Tom Bakker",
+      "ma 18:00",
+      "Knippen"
+     ],
+     [
+      "Sara El Idrissi",
+      "di 09:15",
+      "Kleuren"
+     ],
+     [
+      "Noor de Groot",
+      "di 19:30",
+      "Knippen"
+     ],
+     [
+      "Daan Visser",
+      "wo 12:00",
+      "Baard trimmen"
+     ],
+     [
+      "Lotte Smit",
+      "do 17:45",
+      "Highlights"
+     ],
+     [
+      "Milan Peters",
+      "vr 08:30",
+      "Knippen"
+     ],
+     [
+      "Eva Mulder",
+      "za 11:15",
+      "Kleuren en knippen"
+     ]
+    ]
+   }
+  },
+  {
+   "station": "monitor",
+   "from": "Jij ziet",
+   "scene": {
+    "type": "stat",
+    "value": "38",
+    "label": "afspraken deze week",
+    "sub": "waarvan 19 online geboekt",
+    "nav": 0,
+    "path": "/agenda/overzicht"
+   }
+  },
+  {
+   "station": "phone",
+   "from": "Komt",
+   "scene": {
+    "type": "notify_chat",
+    "app": "Afspraakje",
+    "title": "Nieuwe afspraak",
+    "message": "\"Femke Jansen, knippen en föhnen, za 10:30\"",
+    "contact": "Femke Jansen",
+    "contact_sub": "boekte net online",
+    "takeover": "Bevestigen of verzetten",
+    "reply": "Tot zaterdag!",
+    "notify_at": "Komt",
+    "open_at": "seintje"
+   }
+  },
+  {
+   "station": "table",
+   "from": "Bij onze",
+   "plaque": {
+    "big": "50%",
+    "line1": "boekte online",
+    "line2": "bij één proefsalon (fictief)"
+   },
+   "pawns": {
+    "count": 10,
+    "highlight": 5,
+    "at": "helft"
+   }
+  },
+  {
+   "station": "board",
+   "from": "Probeer",
+   "lines": [
+    {
+     "text": "Een maand gratis",
+     "color": "brand",
+     "at": "maand"
+    },
+    {
+     "text": "Bevalt het niet,",
+     "at": "Bevalt",
+     "size": 105
+    },
+    {
+     "text": "dan stop je gewoon.",
+     "color": "accent",
+     "at": "dan stop",
+     "size": 105
+    },
+    {
+     "text": "www.voorbeeld.nl",
+     "color": "brand",
+     "size": 60
+    }
+   ]
+  }
+ ]
+}

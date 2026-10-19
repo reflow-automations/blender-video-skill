@@ -1,0 +1,59 @@
+{
+  "_uitleg": "Standaardwaarden van de motor. Een les met een getal (afstand, tijd, grootte) wordt HIER aangepast, niet alleen in lessons.md. Zet bij elke wijziging een regel in references/lessons.md met de oude en nieuwe waarde.",
+  "fps": 30,
+  "lead_in": 0.5,
+  "tail": 1.2,
+  "voice": {
+    "_uitleg": "Vul hier de stem in die je kiest (dienst, naam, id), zodat elke video dezelfde stem krijgt.",
+    "engine": "",
+    "preset": "",
+    "voice_id": ""
+  },
+  "board": {
+    "first_line_delay": 0.15,
+    "s_per_char": 0.055,
+    "min_line_s": 0.45,
+    "gap_s": 0.12,
+    "max_font_px": 150,
+    "min_font_px": 56
+  },
+  "table": {
+    "down_delay": 0.55,
+    "down_s": 1.15,
+    "up_s": 1.05
+  },
+  "camera": {
+    "lens": 32,
+    "fstop": 5.6,
+    "margin": 0.12,
+    "move_s": 0.7,
+    "zoom_move_s": 0.5,
+    "hold_push": 0.07,
+    "establishing_s": 0.95,
+    "pullback": 0.35,
+    "subject_center_9x16": 0.42,
+    "subject_center_other": 0.47
+  },
+  "render": {
+    "engine": "EEVEE",
+    "samples_preview": 16,
+    "samples_final": 48,
+    "motion_blur_shutter": 0.5,
+    "exposure": -0.3
+  },
+  "captions": {
+    "font_px_1080w": 64,
+    "y_9x16": 0.7,
+    "y_16x9": 0.84,
+    "y_1x1": 0.8,
+    "max_words": 3,
+    "max_chars": 15,
+    "highlight": "#f59e0b"
+  },
+  "audio": {
+    "lufs": -15,
+    "whoosh_gain": 0.16,
+    "pen_gain": 0.035,
+    "music_db": -22
+  }
+}

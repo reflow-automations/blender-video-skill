@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: UI; src: url(../assets/fonts/hanken.woff2); font-weight: 100 900; }
+@font-face { font-family: Display; src: url(../assets/fonts/bricolage.woff2); font-weight: 100 900; }
+@font-face { font-family: Hand; src: url(../assets/fonts/caveat.ttf); font-weight: 100 900; }
+@font-face { font-family: Caps; src: url(../assets/fonts/montserrat.ttf); font-weight: 100 900; }
+:root { --bg:#0b1628; --panel:#111f36; --line:#22324d; --brand:#0f9670; --accent:#f59e0b; --txt:#e6edf7; --mut:#8ea0bb; --ink:#1e293b; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #000; font-family: UI, sans-serif; overflow: hidden; }
+#root { position: absolute; left: 0; top: 0; overflow: hidden; }
+.pane { position: absolute; inset: 0; display: none; }
+
+/* monitor */
+.mon { background: var(--bg); color: var(--txt); width: 1600px; height: 900px; }
+.mbar { height: 26px; background: #0d0f14; display: flex; align-items: center; gap: 18px; padding: 0 14px; font-size: 13px; color: #cfd6e2; }
+.mbar .r { margin-left: auto; }
+.chrome { height: 44px; background: #1b2232; display: flex; align-items: center; padding: 0 14px; }
+.dots i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; }
+.url { flex: 1; height: 28px; border-radius: 14px; background: #0f1522; color: #b8c3d6; font-size: 14px; display: flex; align-items: center; padding: 0 16px; margin: 0 120px; }
+.url span { color: #6b7a93; }
+.app { position: absolute; top: 70px; left: 0; right: 0; bottom: 0; display: flex; }
+.side { width: 230px; background: rgba(0,0,0,.22); border-right: 1px solid var(--line); padding: 18px 14px; flex: none; }
+.side img { width: 170px; display: block; margin: 0 0 24px 4px; }
+.nav { font-size: 16px; color: var(--mut); padding: 11px 14px; border-radius: 10px; margin-bottom: 4px; display: flex; align-items: center; gap: 12px; }
+.nav.on { background: rgba(255,255,255,.08); color: #fff; }
+.nav .ic { width: 18px; height: 18px; border-radius: 5px; border: 2px solid currentColor; opacity: .8; }
+.main { flex: 1; position: relative; overflow: hidden; }
+.sc { position: absolute; inset: 0; padding: 26px 34px; }
+.sc h1 { font-family: Display; font-size: 34px; font-weight: 700; margin-bottom: 18px; }
+.sc h1 small { font-family: UI; font-size: 16px; color: var(--mut); font-weight: 500; margin-left: 14px; }
+.sc .img { width: 100%; border-radius: 14px; display: block; transform-origin: 50% 30%; }
+.rows { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.row { display: grid; align-items: center; height: 46px; padding: 0 18px; border-bottom: 1px solid var(--line); font-size: 20px; gap: 12px; }
+.row.hd { height: 38px; font-size: 12px; color: var(--mut); letter-spacing: .08em; text-transform: uppercase; }
+.row .n { color: var(--mut); }
+.row .c1 { font-weight: 700; }
+.pill { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 10px; background: rgba(52,211,153,.15); color: #34d399; justify-self: start; }
+.counter { position: absolute; right: 34px; top: 26px; background: var(--accent); color: #111; font-family: Display; font-weight: 800; font-size: 24px; padding: 8px 18px; border-radius: 12px; }
+.mail { width: 880px; background: #f8fafc; color: #0f172a; border-radius: 16px; height: 735px; overflow: hidden; display: flex; flex-direction: column; }
+.mhead { padding: 18px 26px; border-bottom: 1px solid #e2e8f0; font-size: 17px; line-height: 1.9; }
+.mhead .k { color: #64748b; display: inline-block; width: 120px; }
+.mhead .tag { display: inline-block; margin-left: 10px; font-size: 13px; background: #dcfce7; color: #166534; padding: 2px 10px; border-radius: 10px; font-weight: 700; }
+.mbody { padding: 22px 26px; font-size: 24px; line-height: 1.55; white-space: pre-wrap; flex: 1; }
+.caret { display: inline-block; width: 2px; height: 24px; background: #0f172a; vertical-align: -3px; }
+.mfoot { padding: 16px 26px; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 16px; }
+.send { background: var(--brand); color: #fff; font-weight: 800; font-size: 18px; padding: 12px 28px; border-radius: 10px; }
+.sent { font-size: 18px; font-weight: 700; color: var(--brand); opacity: 0; }
+.note { position: absolute; left: 950px; top: 96px; width: 380px; line-height: 1.5; font-size: 15px; color: #67e8f9; border: 1px solid #155e75; background: #082f3a; padding: 12px 14px; border-radius: 10px; }
+.stat { text-align: center; padding-top: 110px; }
+.stat .big { font-family: Display; font-size: 230px; font-weight: 800; color: var(--accent); line-height: 1; letter-spacing: -6px; }
+.stat .lb { font-size: 40px; font-weight: 700; margin-top: 24px; }
+.stat .sb { font-size: 24px; color: var(--mut); margin-top: 14px; }
+.bul { list-style: none; margin-top: 40px; max-width: 1150px; }
+.bul li { font-size: 50px; font-weight: 700; padding: 24px 30px; margin-bottom: 22px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: flex; gap: 18px; align-items: center; opacity: 0; }
+.bul li b { width: 56px; height: 56px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 30px; display: grid; place-items: center; flex: none; }
+.sc video { width: 100%; border-radius: 14px; display: block; }
+.vlabel { position: absolute; left: 60px; bottom: 60px; background: rgba(0,0,0,.65); color: #fff; font-size: 22px; font-weight: 700; padding: 8px 16px; border-radius: 10px; border-left: 5px solid var(--accent); }
+
+.bare { position: absolute; top: 70px; left: 0; right: 0; bottom: 0; overflow: hidden; background: #fff; }
+.bare img { width: 100%; display: block; transform-origin: 50% 0; }
+.avatar { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 28px; flex: none; }
+/* paper (factuur op A4) 707x1000 */
+.pp { width: 707px; height: 1000px; background: #fbfaf6; color: #222; padding: 60px 56px; font-family: UI; }
+.pp .hd { display: flex; justify-content: space-between; align-items: flex-start; }
+.pp .co { font-family: Display; font-weight: 800; font-size: 34px; color: var(--pc); }
+.pp .ti { font-size: 46px; font-weight: 800; letter-spacing: 2px; margin-top: 70px; }
+.pp .meta { font-size: 18px; color: #555; margin-top: 12px; line-height: 1.6; }
+.pp table { width: 100%; border-collapse: collapse; margin-top: 50px; font-size: 19px; }
+.pp td { padding: 12px 0; border-bottom: 1px solid #ddd; }
+.pp td.r { text-align: right; }
+.pp .tot { font-size: 28px; font-weight: 800; text-align: right; margin-top: 34px; }
+.pp .ft { position: absolute; left: 56px; right: 56px; bottom: 50px; font-size: 14px; color: #888; border-top: 1px solid #ddd; padding-top: 12px; }
+/* phone 590x1280 */
+.ph { width: 590px; height: 1280px; color: #fff; background: linear-gradient(160deg, #1e3a5f 0%, var(--bg) 55%, #0a2a22 100%); }
+.island { position: absolute; top: 22px; left: 50%; width: 170px; height: 48px; margin-left: -85px; background: #000; border-radius: 26px; z-index: 5; }
+.pstat { position: absolute; top: 30px; left: 46px; right: 46px; display: flex; justify-content: space-between; font-size: 24px; font-weight: 700; z-index: 5; }
+.ptime { text-align: center; margin-top: 150px; font-family: Display; font-size: 150px; font-weight: 600; letter-spacing: -2px; }
+.pdate { text-align: center; font-size: 30px; opacity: .85; }
+.notif { position: absolute; left: 22px; right: 22px; top: 560px; background: rgba(245,247,250,.94); color: #0f172a; border-radius: 34px; padding: 24px 26px; display: flex; gap: 18px; opacity: 0; }
+.notif img { width: 62px; height: 62px; border-radius: 14px; }
+.notif .t { font-size: 24px; font-weight: 800; }
+.notif .t small { float: right; font-weight: 500; color: #64748b; font-size: 20px; }
+.notif .b { font-size: 24px; line-height: 1.3; margin-top: 4px; }
+.chat { position: absolute; inset: 0; background: #f1f5f9; color: #0f172a; opacity: 0; }
+.chat .top { padding: 90px 30px 22px; background: #fff; border-bottom: 1px solid #e2e8f0; }
+.chat .nm { font-size: 30px; font-weight: 800; }
+.chat .sub { font-size: 22px; color: #64748b; }
+.bub { position: absolute; max-width: 430px; padding: 20px 24px; border-radius: 26px; font-size: 26px; line-height: 1.35; }
+.bub.in { left: 26px; top: 260px; background: #fff; border: 1px solid #e2e8f0; }
+.bub.out { right: 26px; top: 520px; background: var(--brand); color: #fff; opacity: 0; }
+.typing { position: absolute; left: 26px; right: 26px; bottom: 50px; height: 76px; background: #fff; border: 1px solid #cbd5e1; border-radius: 38px; font-size: 26px; padding: 22px 28px; }
+.takeover { position: absolute; left: 26px; top: 430px; font-size: 20px; color: var(--brand); font-weight: 800; opacity: 0; }
+.ph .pimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* board 900x1200 */
+.bd { width: 900px; height: 1200px; background: #f7f7f4; }
+.bd .lg { position: absolute; left: 50%; top: 60px; width: 300px; margin-left: -150px; }
+.hw { position: absolute; font-family: Hand; font-weight: 700; white-space: nowrap; color: var(--ink); }
+
+/* plaque 1040x460 */
+.pq { width: 1040px; height: 460px; background: var(--bg); border: 6px solid var(--line); text-align: center; color: #f0f4fa; font-family: Caps; }
+.pq .big { font-size: 230px; font-weight: 800; color: var(--accent); line-height: 1; margin-top: 34px; letter-spacing: -4px; }
+.pq .l1 { font-size: 46px; font-weight: 700; margin-top: 18px; }
+.pq .l2 { font-size: 32px; font-weight: 500; color: var(--mut); margin-top: 10px; }
+.pq img { max-width: 86%; max-height: 80%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+let TL, BR, VURL, WHICH, root, panes = [];
+const SIZES = { monitor: [1600, 900], phone: [590, 1280], board: [900, 1200], plaque: [1040, 460], paper: [707, 1000] };
+const asset = p => p ? new URL(p, VURL).href : '';
+
+function el(html) { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; }
+
+window.setup = function (timeline, brand, videoUrl, which) {
+  TL = timeline; BR = brand || {}; VURL = videoUrl; WHICH = which;
+  const c = BR.colors || {};
+  for (const [k, v] of Object.entries(c)) document.documentElement.style.setProperty('--' + k, v);
+  root = document.getElementById('root');
+  const [w, h] = SIZES[which]; root.style.width = w + 'px'; root.style.height = h + 'px';
+  let beats = TL.beats.filter(b => b.station === (which === 'plaque' || which === 'paper' ? 'table' : which));
+  if (which === 'plaque') beats = beats.filter(b => b.plaque);
+  if (which === 'paper') { const cl = beats.find(b => b.clutter); beats = cl ? [0, 1, 2, 3, 4, 5].map(k => ({ ...cl, k })) : []; }
+  panes = beats.map(b => ({ b, node: build(which, b) }));
+  panes.forEach(p => root.appendChild(p.node));
+  return beats.length;
+};
+
+function monitorChrome(b, inner) {
+  const app = BR.app || {}; const nav = app.nav || ['Overzicht'];
+  const sc = b.scene || {};
+  const navOn = sc.nav ?? 0;
+  return `<div class="pane mon">
+   <div class="mbar"><b></b><b>${esc(app.browser || 'Chrome')}</b><span>Archief</span><span>Wijzig</span><span>Weergave</span><span class="r">${esc(app.clock || 'di 21 okt  09:41')}</span></div>
+   <div class="chrome"><span class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
+     <div class="url">${esc(app.url || 'app.example.com')}<span>${esc(sc.path || '')}</span></div></div>
+   <div class="app"><div class="side"><img src="${asset(BR.logo_on_dark)}">
+     ${nav.map((n, i) => `<div class="nav ${i === navOn ? 'on' : ''}"><span class="ic"></span>${esc(n)}</div>`).join('')}</div>
+     <div class="main"><div class="sc">${inner}</div></div></div></div>`;
+}
+
+function build(which, b) {
+  const sc = b.scene || {};
+  if (which === 'monitor' && sc.bare) {
+    const app = BR.app || {};
+    return el(`<div class="pane mon"><div class="mbar"><b></b><b>${esc(app.browser || 'Chrome')}</b><span>Archief</span><span>Wijzig</span><span>Weergave</span><span class="r">${esc(app.clock || 'di 21 okt  09:41')}</span></div>
+      <div class="chrome"><span class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
+      <div class="url">${esc(app.url || 'app.example.com')}<span>${esc(sc.path || '')}</span></div></div><div class="bare"><img src="${asset(sc.src)}"></div></div>`);
+  }
+  if (which === 'paper') {
+    const cl = b.clutter || {}; const sup = cl.suppliers || ['Havenruimte Werkplekken', 'Bytewinkel Zakelijk', 'Tafelgenoten Catering', 'Datadok Hosting', 'Brightdesk Design', 'Meridiaan CRM'];
+    const cols = ['#2747c7', '#17784a', '#b4531f', '#6d28d9', '#0f766e', '#be123c']; const k = b.k;
+    const amt = [129.95, 48.4, 518.89, 59.29, 49.0, 119.79][k]; const btw = (amt * 21 / 121).toFixed(2).replace('.', ','); const ex = (amt - amt * 21 / 121).toFixed(2).replace('.', ',');
+    return el(`<div class="pane pp" style="--pc:${cols[k]}"><div class="hd"><div class="co">${esc(sup[k % sup.length])}</div><div class="meta" style="text-align:right">Factuurnr. 2026-0${41 + k}<br>${['14 mrt', '2 feb', '28 jan', '9 okt', '17 sep', '3 jun'][k]} 2026</div></div>
+      <div class="ti">FACTUUR</div><div class="meta">Aan: ${esc(cl.client || 'Noorderlicht Studio')}<br>Betaaltermijn 14 dagen</div>
+      <table><tr><td>Diensten ${['maart', 'februari', 'januari', 'oktober', 'september', 'juni'][k]}</td><td class="r">€ ${ex}</td></tr><tr><td>Btw 21%</td><td class="r">€ ${btw}</td></tr></table>
+      <div class="tot">Totaal € ${amt.toFixed(2).replace('.', ',')}</div><div class="ft">Fictief voorbeeld · IBAN NL00 DEMO 0000 0000 00</div></div>`);
+  }
+  if (which === 'monitor') {
+    const h1 = sc.title ? `<h1>${esc(sc.title)}<small>${esc(sc.subtitle || '')}</small></h1>` : '';
+    let inner = '';
+    if (sc.type === 'image') inner = h1 + `<img class="img" src="${asset(sc.src)}">`;
+    if (sc.type === 'list') {
+      const cols = sc.columns || []; const wd = sc.widths || cols.map((_, i) => (i === 0 || (i === cols.length - 1 && cols.length > 2)) ? 1.6 : 1); const grid = `46px ${wd.map(x => x + 'fr').join(' ')} 110px`;
+      inner = h1 + (sc.counter !== false ? `<div class="counter">0 / ${sc.rows.length}</div>` : '') +
+        `<div class="rows"><div class="row hd" style="grid-template-columns:${grid}"><span>#</span>${cols.map(c => `<span>${esc(c)}</span>`).join('')}<span>${esc(sc.status_header || 'Status')}</span></div>` +
+        sc.rows.map((r, i) => `<div class="row" style="grid-template-columns:${grid}"><span class="n">${i + 1}</span>${r.map((c, k) => `<span class="c${k + 1}">${esc(c)}</span>`).join('')}<span class="pill">${esc(sc.status || 'Past')}</span></div>`).join('') + `</div>`;
+    }
+    if (sc.type === 'mail') inner = h1 + (sc.note ? `<div class="note">${sc.note.map(n => `<b>${esc(n[0])}</b><br>${esc(n[1])}`).join('<br><br>')}</div>` : '') +
+      `<div class="mail"><div class="mhead"><div><span class="k">Van</span>${esc(sc.from)}${sc.from_tag ? `<span class="tag">${esc(sc.from_tag)}</span>` : ''}</div>
+       <div><span class="k">Aan</span>${esc(sc.to)}</div><div><span class="k">Onderwerp</span><b>${esc(sc.subject)}</b></div></div>
+       <div class="mbody"></div><div class="mfoot"><div class="send">${esc(sc.send_label || 'Versturen')}</div><div class="sent">${esc(sc.sent_label || 'Verstuurd ✓')}</div></div></div>`;
+    if (sc.type === 'stat') inner = h1 + `<div class="stat"><div class="big">0</div><div class="lb">${esc(sc.label)}</div><div class="sb">${esc(sc.sub || '')}</div></div>`;
+    if (sc.type === 'bullets') inner = h1 + `<ul class="bul">${(sc.items || []).map((x, i) => `<li><b>${i + 1}</b>${esc(x)}</li>`).join('')}</ul>`;
+    if (sc.type === 'video') inner = h1 + `<video muted preload="auto" src="${asset(sc.src)}"></video>${sc.labels ? '<div class="vlabel"></div>' : ''}`;
+    return el(monitorChrome(b, inner));
+  }
+  if (which === 'phone') {
+    const app = BR.app || {};
+    if ((sc.type || 'notify_chat') === 'notify_chat') return el(`<div class="pane ph"><div class="island"></div><div class="pstat"><span>${esc(sc.clock || '9:41')}</span><span>5G ▮▮▮</span></div>
+      <div class="ptime">${esc(sc.clock || '9:41')}</div><div class="pdate">${esc(sc.date || 'dinsdag 21 oktober')}</div>
+      <div class="notif">${sc.avatar ? `<div class="avatar" style="background:${sc.avatar_color || '#25a35a'}">${esc(sc.avatar)}</div>` : `<img src="${asset(sc.icon || BR.app_icon)}">`}<div><div class="t">${esc(sc.app || BR.name)}<small>nu</small></div><div class="b"><b>${esc(sc.title)}</b><br>${esc(sc.message)}</div></div></div>
+      <div class="chat"><div class="top"><div class="nm">${esc(sc.contact)}</div><div class="sub">${esc(sc.contact_sub || '')}</div></div>
+       <div class="bub in">${esc(sc.message_full || sc.message.replace(/^"|"$/g, ''))}</div><div class="takeover">${esc(sc.takeover || '')}</div>
+       <div class="bub out">${esc(sc.reply || '')}</div><div class="typing"></div></div></div>`);
+    if (sc.type === 'image') return el(`<div class="pane ph"><img class="pimg" src="${asset(sc.src)}"><div class="island"></div></div>`);
+  }
+  if (which === 'board') {
+    const n = el(`<div class="pane bd">${BR.logo_on_light ? `<img class="lg" src="${asset(BR.logo_on_light)}">` : ''}</div>`);
+    layoutBoard(n, b); return n;
+  }
+  if (which === 'plaque') {
+    const p = b.plaque || {};
+    return el(`<div class="pane pq">${p.image ? `<img src="${asset(p.image)}">` : `<div class="big">${esc(p.big)}</div><div class="l1">${esc(p.line1 || '')}</div><div class="l2">${esc(p.line2 || '')}</div>`}</div>`);
+  }
+  return el('<div class="pane"></div>');
+}
+
+function layoutBoard(node, b) {
+  const lines = b.lines || []; const D = TL.board || {}; const maxF = 150, minF = 56; const W = 900 - 150;
+  const cv = document.createElement('canvas').getContext('2d');
+  let y = BR.logo_on_light ? 230 : 120; const items = [];
+  lines.forEach(ln => {
+    cv.font = `700 100px Hand`; const w100 = cv.measureText(ln.text).width;
+    let f = Math.min(ln.size || maxF, maxF, W / w100 * 100); f = Math.max(f, minF);
+    items.push({ ln, f }); });
+  const total = items.reduce((a, it) => a + it.f * 1.08 + (it.ln.space || 14), 0);
+  const scale = Math.min(1, (1150 - y) / total);
+  items.forEach(it => {
+    const f = it.f * scale; const d = document.createElement('div'); d.className = 'hw';
+    const col = it.ln.color === 'accent' ? 'var(--accent)' : it.ln.color === 'brand' ? 'var(--brand)' : 'var(--ink)';
+    d.style.color = col; d.style.fontSize = f + 'px'; d.style.left = (it.ln.indent || 75) + 'px'; d.style.top = y + 'px';
+    d.textContent = it.ln.text; node.appendChild(d); it.node = d; it.y = y; it.size = f;
+    y += f * 1.08 + (it.ln.space || 14) * scale; });
+  node._items = items;
+}
+
+function activePane(t) {
+  let cur = null; for (const p of panes) if (t >= p.b.swap) cur = p; return cur || panes[0];
+}
+
+window.render = async function (t) {
+  if (WHICH === 'plaque' || WHICH === 'paper') { panes.forEach((p, i) => p.node.style.display = i === Math.round(t) ? 'block' : 'none'); return null; }
+  const P = activePane(t); panes.forEach(p => p.node.style.display = p === P ? 'block' : 'none');
+  if (!P) return null;
+  const b = P.b, sc = b.scene || {}, ev = b.events || {}, n = P.node;
+  const q = s => n.querySelector(s), qa = s => [...n.querySelectorAll(s)];
+  if (WHICH === 'monitor') {
+    if (sc.type === 'image') { const im = q('.img') || q('.bare img'); if (im) im.style.transform = `scale(${1 + 0.04 * prog(t, b.start, b.end)})`; }
+    if (sc.type === 'list') {
+      let k = 0; qa('.row:not(.hd)').forEach((r, i) => { const a = ev.rows[i]; const p = prog(t, a, a + 0.25); if (p > 0) k = i + 1;
+        r.style.opacity = p; r.style.transform = `translateX(${(1 - ease(p)) * 40}px)`; });
+      const c = q('.counter'); if (c) c.textContent = `${k} / ${sc.rows.length}`;
+    }
+    if (sc.type === 'mail') {
+      const body = sc.body || ''; const k = Math.floor(prog(t, ev.type0, ev.type1) * body.length);
+      const caret = (Math.floor(t * 2) % 2 === 0 || k < body.length) ? '<span class="caret"></span>' : '';
+      q('.mbody').innerHTML = esc(body.slice(0, k)) + caret;
+      const sp = prog(t, ev.send, ev.send + 0.3); const bt = q('.send');
+      bt.style.transform = `scale(${1 - 0.08 * Math.sin(sp * Math.PI)})`; bt.style.opacity = 1 - prog(t, ev.send + 0.3, ev.send + 0.5) * 0.4;
+      q('.sent').style.opacity = prog(t, ev.send + 0.3, ev.send + 0.6);
+      const tag = q('.tag'); if (tag) tag.style.boxShadow = `0 0 0 ${prog(t, ev.tag, ev.tag + 0.4) * 4}px #22c55e`;
+    }
+    if (sc.type === 'stat') {
+      const raw = String(sc.value); const m = raw.match(/[\d.,]+/); const num = m ? parseFloat(m[0].replace('.', '').replace(',', '.')) : 0;
+      const dec = m && m[0].includes(',') ? m[0].split(',')[1].length : 0; const p = ease(prog(t, ev.count0, ev.count1));
+      q('.big').textContent = m ? raw.replace(m[0], (num * p).toFixed(dec).replace('.', ',')) : raw;
+    }
+    if (sc.type === 'bullets') qa('.bul li').forEach((li, i) => { const p = prog(t, ev.items[i], ev.items[i] + 0.3); li.style.opacity = p; li.style.transform = `translateY(${(1 - ease(p)) * 20}px)`; });
+    if (sc.type === 'video') {
+      const v = q('video'); const want = Math.max(0, t - b.start) + (sc.offset || 0);
+      if (v.readyState < 1) await new Promise(r => v.addEventListener('loadedmetadata', r, { once: true }));
+      const tt = Math.min(want, (v.duration || 1) - 0.05);
+      if (Math.abs(v.currentTime - tt) > 0.001) { v.currentTime = tt; await new Promise(r => v.addEventListener('seeked', r, { once: true })); }
+      if (sc.labels) { const lb = q('.vlabel'); const cur = sc.labels.filter(l => want >= l[0]).pop(); lb.textContent = cur ? cur[1] : ''; lb.style.display = cur ? 'block' : 'none'; }
+    }
+    return null;
+  }
+  if (WHICH === 'phone' && (sc.type || 'notify_chat') === 'notify_chat') {
+    const np = prog(t, ev.notify, ev.notify + 0.35); const nf = q('.notif');
+    nf.style.opacity = np; nf.style.transform = `translateY(${(1 - ease(np)) * -60}px)`;
+    q('.chat').style.opacity = prog(t, ev.open, ev.open + 0.35);
+    q('.takeover').style.opacity = prog(t, ev.open + 0.3, ev.open + 0.6);
+    const txt = sc.reply || ''; const k = Math.floor(prog(t, ev.reply0, ev.reply1) * txt.length);
+    q('.typing').textContent = t < ev.sent ? txt.slice(0, k) : '';
+    q('.bub.out').style.opacity = prog(t, ev.sent, ev.sent + 0.2);
+    return null;
+  }
+  if (WHICH === 'board') {
+    let pen = null; const items = n._items || [];
+    items.forEach(it => {
+      const p = prog(t, it.ln.t0, it.ln.t1);
+      it.node.style.clipPath = p >= 1 ? 'none' : `inset(-20px ${100 - p * 100}% -40px -10px)`;
+      if (p > 0 && p < 1) pen = { x: (it.ln.indent || 75) + it.node.offsetWidth * p, y: it.y + it.size * 0.72 + Math.sin(t * 40) * it.size * 0.12, writing: 1 };
+    });
+    if (!pen) {
+      let last = null; items.forEach(it => { if (t >= it.ln.t1) last = it; });
+      pen = last ? { x: (last.ln.indent || 75) + last.node.offsetWidth + 30, y: last.y + last.size * 0.9, writing: 0 }
+                 : { x: 60, y: (items[0] ? items[0].y + 40 : 300), writing: 0 };
+    }
+    return pen;
+  }
+  return null;
+};
+</script>
+</body>
+</html>
